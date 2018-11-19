@@ -3,6 +3,7 @@ import sys
 from error import error
 from check import findLine, getRules, checkLines
 from parsing import parsing
+from solve import solve, setFacts, getFacts, resolveModified
 
 def initFacts():
 	facts = []
@@ -22,8 +23,26 @@ def cleanContent(content):
 			valid.append(tmp)
 	return valid
 
+def displayResult(query, facts):
+	if (len(sys.argv) == 3 and sys.argv[2] == 'test'):
+		output = ''
+		for key in query:
+			output += str(getFacts(key, facts))
+		print(output)
+	else:
+		for key in query:
+			value = 'false'
+			color = '\033[91m'
+			if (getFacts(key, facts) == 1):
+				value = 'true'
+				color = '\033[92m'
+			elif (getFacts(key, facts) == -1):
+				value = 'undetermined'
+				color = '\033[95m'
+			print(color + key + ' is ' + value)
+
 if __name__ == "__main__":
-	if (len(sys.argv) != 2):
+	if (len(sys.argv) != 2 and len(sys.argv) != 3):
 		error('python main.py [file]')
 	filename = sys.argv[1]
 	content = ''
@@ -37,6 +56,10 @@ if __name__ == "__main__":
 	content = cleanContent(content)
 	checkLines(content)
 	initial = findLine(content, '=')
+	for key in initial:
+		setFacts(key, facts, 1)
 	query = findLine(content, '?')
 	rules = getRules(content)
-	parsing(rules)
+	rules = parsing(rules)
+	resolveModified(rules, facts)
+	displayResult(query, facts)

@@ -46,9 +46,9 @@ def checkEqual(rule, line):
 	if (x != 1):
 		error('Error rule ' + line)
 
-
 def parsing(rules):
 	line = 0
+	valid = []
 	while (line < len(rules)):
 		rule = rules[line]
 		rule = removeSpaces(rule)
@@ -83,5 +83,18 @@ def parsing(rules):
 			else:
 				error('Unexpected ' + x + ' rule ' + str(line + 1))
 			i += 1
-		rules[line] = rule
+		err = 0
+		index = rule.index('=')
+		x = 0
+		while (x < index and err == 0):
+			if (rule[x].isupper()):
+				i = index
+				while (i < len(rule)):
+					if (rule[i] == rule[x]):
+						err = 1
+					i += 1
+			x += 1
+		if (err == 0):
+			valid.append(rule)
 		line += 1
+	return valid
