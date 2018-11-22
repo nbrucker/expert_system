@@ -65,6 +65,12 @@ if __name__ == "__main__":
 	test('test33.txt', '110')
 	test('test34.txt', '1-1-1-1-1')
 
+	test('test35.txt', '1')
+	test('test36.txt', '0')
+	test('test37.txt', '0')
+	test('test38.txt', '0')
+	test('test39.txt', '1')
+
 	f = open('logs', 'w')
 	f.close()
 	f = open('logs', 'w')
