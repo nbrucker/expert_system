@@ -10,7 +10,7 @@ def test(filename, expecting):
 	global nbr_success
 	global nbr_error
 	global logs
-	os.system('python ../main.py ' + filename + ' test > output')
+	os.system('python ../../test/main.py ' + filename + ' test > output')
 	f = open('output', 'r')
 	content = f.read().strip()
 	f.close()
@@ -59,11 +59,11 @@ if __name__ == "__main__":
 	test('test28.txt', '1')
 	test('test29.txt', '1')
 
-	test('test30.txt', '1-1-1-1-1')
-	test('test31.txt', '111')
+	test('test30.txt', '12222')
+	test('test31.txt', '000')
 	test('test32.txt', '100')
 	test('test33.txt', '110')
-	test('test34.txt', '1-1-1-1-1')
+	test('test34.txt', '12222')
 
 	test('test35.txt', '1')
 	test('test36.txt', '0')

@@ -83,18 +83,6 @@ def parsing(rules):
 			else:
 				error('Unexpected ' + x + ' rule ' + str(line + 1))
 			i += 1
-		err = 0
-		index = rule.index('=')
-		x = 0
-		while (x < index and err == 0):
-			if (rule[x].isupper()):
-				i = index
-				while (i < len(rule)):
-					if (rule[i] == rule[x]):
-						err = 1
-					i += 1
-			x += 1
-		if (err == 0):
-			valid.append(rule)
+		valid.append(rule)
 		line += 1
 	return valid

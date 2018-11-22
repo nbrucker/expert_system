@@ -3,15 +3,7 @@ import sys
 from error import error
 from check import findLine, getRules, checkLines
 from parsing import parsing
-from solve import solve, setFacts, getFacts, resolveModified
-
-def initFacts():
-	facts = []
-	i = 0
-	while (i < 26):
-		facts.append(0)
-		i += 1
-	return facts
+import params
 
 def cleanContent(content):
 	valid = []
@@ -23,25 +15,31 @@ def cleanContent(content):
 			valid.append(tmp)
 	return valid
 
-def displayResult(query, facts):
+def displayResult(query):
 	if (len(sys.argv) == 3 and sys.argv[2] == 'test'):
 		output = ''
 		for key in query:
-			output += str(getFacts(key, facts))
+			output += str(params.getFacts(key))
 		print(output)
 	else:
 		for key in query:
 			value = 'false'
 			color = '\033[91m'
-			if (getFacts(key, facts) == 1):
+			result = params.getFacts(key)
+			if (result == 1):
 				value = 'true'
 				color = '\033[92m'
-			elif (getFacts(key, facts) == -1):
+			elif (result == 2):
 				value = 'undetermined'
 				color = '\033[95m'
+			elif (result == -1):
+				value = 'error'
 			print(color + key + ' is ' + value)
 
 if __name__ == "__main__":
+	global rules
+	global initial
+	global facts
 	if (len(sys.argv) != 2 and len(sys.argv) != 3):
 		error('python main.py [file]')
 	filename = sys.argv[1]
@@ -52,14 +50,13 @@ if __name__ == "__main__":
 		f.close()
 	except:
 		error('error opening file')
-	facts = initFacts()
 	content = cleanContent(content)
 	checkLines(content)
 	initial = findLine(content, '=')
-	for key in initial:
-		setFacts(key, facts, 1)
 	query = findLine(content, '?')
 	rules = getRules(content)
 	rules = parsing(rules)
-	resolveModified(rules, facts)
-	displayResult(query, facts)
+	params.initFacts()
+	params.setRules(rules)
+	params.setInitial(initial)
+	displayResult(query)
