@@ -32,8 +32,6 @@ def displayResult(query):
 			elif (result == 2):
 				value = 'undetermined'
 				color = '\033[95m'
-			elif (result == -1):
-				value = 'error'
 			print(color + key + ' is ' + value)
 
 if __name__ == "__main__":
